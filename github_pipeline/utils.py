@@ -25,6 +25,7 @@ def create_markdown_report(context: AssetExecutionContext, report_data: dict[str
     """
     # use pandas to convert dict with report data to markdown table
     df_report = pd.DataFrame.from_dict(report_data)
+    df_report = df_report.drop('html_url', axis=0) # Droping the url row as its not required in the final report.
     md_report = df_report.to_markdown()
 
     context.add_output_metadata({"report": MetadataValue.md(md_report)})

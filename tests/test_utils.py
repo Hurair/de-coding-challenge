@@ -34,10 +34,33 @@ def test_create_markdown_report(mocker):
     # Arrange
     context = mocker.Mock(spec=AssetExecutionContext)
     report_data = {
-        "delta-rs": {"stars": 2252, "forks": 416},
-        "hudi-rs": {"stars": 400, "forks": 28}
+        "delta-rs": {
+            "html_url": "https://github.com/delta-io/delta-rs",
+            "stars": 123,
+            "forks": 45,
+            "watchers": 10,
+            "releases": 5,
+            "open_issues": 20,
+            "closed_issues": 15,
+            "avg_days_until_issue_was_closed": 3.2,
+            "open_prs": 5,
+            "closed_prs": 10,
+            "avg_days_until_pr_was_closed": 2.5,},
+        "hudi-rs": {
+            "html_url": "https://github.com/apache/hudi-rs",
+            "stars": 11,
+            "forks": 435,
+            "watchers": 1245,
+            "releases": 512,
+            "open_issues": 325,
+            "closed_issues": 111,
+            "avg_days_until_issue_was_closed": 1.2,
+            "open_prs": 5,
+            "closed_prs": 120,
+            "avg_days_until_pr_was_closed": 21.5,
+        }
     }
-    expected_md = pd.DataFrame.from_dict(report_data).to_markdown()
+    expected_md = pd.DataFrame.from_dict(report_data).drop("html_url", axis=0).to_markdown()
 
     # Act
     md_report = create_markdown_report(context, report_data)
