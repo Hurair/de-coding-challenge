@@ -46,34 +46,34 @@ def create_repo_metadata_asset(owner: str, repo: str, key_prefix: list[str], nam
 
 # Creating assets using the generic function
 delta_rs_metadata = create_repo_metadata_asset(
-    'delta-io',
-    'delta-rs',
-    ['stage', 'github', 'repositories', 'delta-io', 'delta-rs'],
-    'delta-rs_repo_metadata'
+    "delta-io",
+    "delta-rs",
+    ["stage", "github", "repositories", "delta-io", "delta-rs"],
+    "delta-rs_repo_metadata"
 )
 iceberg_python_metadata = create_repo_metadata_asset(
-    'apache',
-    'iceberg-python',
-    ['stage', 'github', 'repositories', 'apache', 'iceberg-python'],
-    'iceberg-python_repo_metadata'
+    "apache",
+    "iceberg-python",
+    ["stage", "github", "repositories", "apache", "iceberg-python"],
+    "iceberg-python_repo_metadata"
 )
 hudi_rs_metadata = create_repo_metadata_asset(
-    'apache',
-    'hudi-rs',
-    ['stage', 'github', 'repositories', 'apache', 'hudi-rs'],
-    'hudi-rs_repo_metadata'
+    "apache",
+    "hudi-rs",
+    ["stage", "github", "repositories", "apache", "hudi-rs"],
+    "hudi-rs_repo_metadata"
 )
 
 
 @asset(
-    key_prefix=['dm', 'reports'],
+    key_prefix=["dm", "reports"],
     ins={
-        'delta_rs': AssetIn(AssetKey('delta-rs_repo_metadata')),
-        'iceberg_python': AssetIn(AssetKey('iceberg-python_repo_metadata')),
-        'hudi_rs': AssetIn(AssetKey('hudi-rs_repo_metadata')),
+        "delta_rs": AssetIn(AssetKey("delta-rs_repo_metadata")),
+        "iceberg_python": AssetIn(AssetKey("iceberg-python_repo_metadata")),
+        "hudi_rs": AssetIn(AssetKey("hudi-rs_repo_metadata")),
     },
-    io_manager_key='md_io_manager',
-    group_name='github',
+    io_manager_key="md_io_manager",
+    group_name="github",
 )
 def repo_report(
         context: AssetExecutionContext,
@@ -84,23 +84,23 @@ def repo_report(
         Generate a markdown report comparing multiple GitHub repositories.
 
         This asset creates a comparative report for the provided GitHub repositories,
-        including 'delta-rs', 'iceberg-python', and 'hudi-rs'. The metadata for each
+        including "delta-rs", "iceberg-python", and "hudi-rs". The metadata for each
         repository is passed as input, and the function generates a markdown-formatted
         report.
 
         Args:
             context (AssetExecutionContext): The execution context provided by Dagster.
-            delta_rs (dict[str, Any]): Metadata for the 'delta-rs' repository, including details like stars, forks etc.
-            iceberg_python (dict[str, Any]): Metadata for the 'iceberg-python' repository, similar to delta_rs.
-            hudi_rs (dict[str, Any]): Metadata for the 'hudi-rs' repository, similar to delta_rs.
+            delta_rs (dict[str, Any]): Metadata for the "delta-rs" repository, including details like stars, forks etc.
+            iceberg_python (dict[str, Any]): Metadata for the "iceberg-python" repository, similar to delta_rs.
+            hudi_rs (dict[str, Any]): Metadata for the "hudi-rs" repository, similar to delta_rs.
 
         Returns:
             str: A markdown-formatted string that compares the three GitHub repositories.
         """
 
     report_data = {
-        'delta-rs': delta_rs,
-        'iceberg-python': iceberg_python,
-        'hudi-rs': hudi_rs,
+        "delta-rs": delta_rs,
+        "iceberg-python": iceberg_python,
+        "hudi-rs": hudi_rs,
     }
     return create_markdown_report(context, report_data)

@@ -27,7 +27,7 @@ def create_markdown_report(context: AssetExecutionContext, report_data: dict[str
     df_report = pd.DataFrame.from_dict(report_data)
     md_report = df_report.to_markdown()
 
-    context.add_output_metadata({'report': MetadataValue.md(md_report)})
+    context.add_output_metadata({"report": MetadataValue.md(md_report)})
     return md_report
 
 
@@ -63,8 +63,8 @@ def fetch_repo_metadata(context: AssetExecutionContext, github_api: GitHubAPIRes
         repo_metadata = github_api.fetch_repo_details(owner=owner, repo=repo)
         context.add_output_metadata(
             metadata={
-                'repo link': MetadataValue.url(repo_metadata.get('html_url')),
-                'data preview': MetadataValue.json(repo_metadata),
+                "repo link": MetadataValue.url(repo_metadata.get("html_url")),
+                "data preview": MetadataValue.json(repo_metadata),
             }
         )
         return repo_metadata
