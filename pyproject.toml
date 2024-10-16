@@ -16,6 +16,8 @@ pandas = ">=2.2.2"
 moto = "^5.0.17"
 pytest=">=8.3.3"
 pytest-mock=">=3.14.0"
+requests-mock=">=1.12.1"
+
 
 [tool.poetry.group.dev.dependencies]
 boto3-stubs = {extras = ["s3"], version = ">=1.35.14"}
