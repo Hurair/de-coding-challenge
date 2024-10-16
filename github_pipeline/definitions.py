@@ -1,3 +1,5 @@
+from dagster_aws.s3 import s3_resource
+
 from dagster import (
     AssetSelection,
     Definitions,
@@ -5,7 +7,6 @@ from dagster import (
     define_asset_job,
     load_assets_from_modules,
 )
-from dagster_aws.s3 import s3_resource
 
 from . import assets
 from .io_managers import s3_io_manager

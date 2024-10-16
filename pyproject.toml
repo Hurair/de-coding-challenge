@@ -2,7 +2,7 @@
 name = "github-pipeline"
 version = "0.1.0"
 description = "Dagster-based ETL tasks for GitHub reporting"
-authors = ["Your Name <you@example.com>"]
+authors = ["Hurair Hashmi <hashmihurair@gmail.com>"]
 readme = "README.md"
 packages = [
     { include = "github_pipeline" },
@@ -13,6 +13,9 @@ python = ">=3.10,<3.13"
 dagster = ">=1.8.4"
 dagster-aws = ">=0.24.4"
 pandas = ">=2.2.2"
+moto = "^5.0.17"
+pytest=">=8.3.3"
+pytest-mock=">=3.14.0"
 
 [tool.poetry.group.dev.dependencies]
 boto3-stubs = {extras = ["s3"], version = ">=1.35.14"}
