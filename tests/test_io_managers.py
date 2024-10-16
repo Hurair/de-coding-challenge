@@ -9,8 +9,8 @@ from dagster import InputContext, OutputContext
 from github_pipeline.io_managers import JsonObjectS3IOManager, TextObjectS3IOManager
 
 # Mock constants
-BUCKET_NAME = 'test-bucket'
-S3_PREFIX = 'test-prefix'
+BUCKET_NAME = "test-bucket"
+S3_PREFIX = "test-prefix"
 
 @pytest.fixture
 def mock_s3_client():
@@ -25,7 +25,7 @@ def mock_s3_client():
         boto3.client: A mocked S3 client.
     """
     with mock_aws():
-        s3 = boto3.client('s3', region_name='us-east-1')
+        s3 = boto3.client("s3", region_name="us-east-1")
         s3.create_bucket(Bucket=BUCKET_NAME)
         yield s3
 
@@ -45,14 +45,14 @@ def test_jsonobject_s3_io_manager_load(mocker, mock_s3_client):
     # Arrange
     json_manager = JsonObjectS3IOManager(s3_bucket=BUCKET_NAME, s3_session=mock_s3_client, s3_prefix=S3_PREFIX)
     test_data = {"key": "value"}
-    json_bytes = json.dumps(test_data).encode('utf-8')
+    json_bytes = json.dumps(test_data).encode("utf-8")
 
     # Mock S3 file
-    mock_s3_client.put_object(Bucket=BUCKET_NAME, Key=f'{S3_PREFIX}/test.json', Body=json_bytes)
+    mock_s3_client.put_object(Bucket=BUCKET_NAME, Key=f"{S3_PREFIX}/test.json", Body=json_bytes)
 
     # Create a mock InputContext
     mock_context = mocker.Mock(spec=InputContext)
-    path = UPath(f'{S3_PREFIX}/test.json')
+    path = UPath(f"{S3_PREFIX}/test.json")
 
     # Act
     loaded_data = json_manager.load_from_path(context=mock_context, path=path)
@@ -78,14 +78,14 @@ def test_jsonobject_s3_io_manager_dump(mocker, mock_s3_client):
 
     # Create a mock OutputContext
     mock_context = mocker.Mock(spec=OutputContext)
-    path = UPath(f'{S3_PREFIX}/test.json')
+    path = UPath(f"{S3_PREFIX}/test.json")
 
     # Act
     json_manager.dump_to_path(context=mock_context, obj=test_data, path=path)
 
     # Verify the content in S3
-    response = mock_s3_client.get_object(Bucket=BUCKET_NAME, Key=f'{S3_PREFIX}/test.json')
-    loaded_data = json.load(response['Body'])
+    response = mock_s3_client.get_object(Bucket=BUCKET_NAME, Key=f"{S3_PREFIX}/test.json")
+    loaded_data = json.load(response["Body"])
 
     # Assert
     assert loaded_data == test_data
@@ -106,14 +106,14 @@ def test_textobject_s3_io_manager_load(mocker, mock_s3_client):
     # Arrange
     text_manager = TextObjectS3IOManager(s3_bucket=BUCKET_NAME, s3_session=mock_s3_client, s3_prefix=S3_PREFIX)
     test_text = "Hello, world!"
-    text_bytes = test_text.encode('utf-8')
+    text_bytes = test_text.encode("utf-8")
 
     # Mock S3 file
-    mock_s3_client.put_object(Bucket=BUCKET_NAME, Key=f'{S3_PREFIX}/test.txt', Body=text_bytes)
+    mock_s3_client.put_object(Bucket=BUCKET_NAME, Key=f"{S3_PREFIX}/test.txt", Body=text_bytes)
 
     # Create a mock InputContext
     mock_context = mocker.Mock(spec=InputContext)
-    path = UPath(f'{S3_PREFIX}/test.txt')
+    path = UPath(f"{S3_PREFIX}/test.txt")
 
     # Act
     loaded_text = text_manager.load_from_path(context=mock_context, path=path)
@@ -139,14 +139,14 @@ def test_textobject_s3_io_manager_dump(mocker, mock_s3_client):
 
     # Create a mock OutputContext
     mock_context = mocker.Mock(spec=OutputContext)
-    path = UPath(f'{S3_PREFIX}/test.txt')
+    path = UPath(f"{S3_PREFIX}/test.txt")
 
     # Act
     text_manager.dump_to_path(context=mock_context, obj=test_text, path=path)
 
     # Verify the content in S3
-    response = mock_s3_client.get_object(Bucket=BUCKET_NAME, Key=f'{S3_PREFIX}/test.txt')
-    loaded_text = response['Body'].read().decode('utf-8')
+    response = mock_s3_client.get_object(Bucket=BUCKET_NAME, Key=f"{S3_PREFIX}/test.txt")
+    loaded_text = response["Body"].read().decode("utf-8")
 
     # Assert
     assert loaded_text == test_text

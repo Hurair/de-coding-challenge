@@ -60,9 +60,9 @@ def test_fetch_repo_details(requests_mock, github_api_resource):
     """
     # Arrange
     # Mock the API responses
-    repo_url = 'https://api.github.com/repos/test_owner/test_repo'
-    issues_url = 'https://api.github.com/repos/test_owner/test_repo/issues'
-    releases_url = 'https://api.github.com/repos/test_owner/test_repo/releases'
+    repo_url = "https://api.github.com/repos/test_owner/test_repo"
+    issues_url = "https://api.github.com/repos/test_owner/test_repo/issues"
+    releases_url = "https://api.github.com/repos/test_owner/test_repo/releases"
 
     # Mock GitHub API response for repo metadata
     requests_mock.get(repo_url, json=mock_repo_metadata, status_code=200)
@@ -113,7 +113,7 @@ def test_execute_request_raises_http_error(requests_mock, github_api_resource):
     """
     # Arrange
     # Ensure the correct URL is mocked
-    repo_url = 'https://api.github.com/repos/test_owner/test_repo'
+    repo_url = "https://api.github.com/repos/test_owner/test_repo"
 
     # Simulate an error from the GitHub API (404 Not Found)
     requests_mock.get(repo_url, status_code=404)
@@ -121,4 +121,4 @@ def test_execute_request_raises_http_error(requests_mock, github_api_resource):
     # Act & Assert
     # Ensure that the HTTPError is raised when calling execute_request
     with pytest.raises(requests.HTTPError):
-        github_api_resource.execute_request('GET', '/repos/test_owner/test_repo')
+        github_api_resource.execute_request("GET", "/repos/test_owner/test_repo")

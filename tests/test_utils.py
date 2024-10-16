@@ -46,4 +46,4 @@ def test_create_markdown_report(mocker):
     assert md_report.strip() == expected_md.strip()  # Check the markdown output
     context.add_output_metadata.assert_called_once()  # Check if metadata was added
     # Verify that the correct metadata is added
-    context.add_output_metadata.assert_called_with({'report': MetadataValue.md(md_report)})
+    context.add_output_metadata.assert_called_with({"report": MetadataValue.md(md_report)})

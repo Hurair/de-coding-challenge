@@ -43,6 +43,7 @@ def test_repo_metadata(mock_github_api):
     Args:
         mock_github_api (mock): A mocked instance of the GitHub API Resource.
     """
+    # Arrange
     asset_function = create_repo_metadata_asset(
         owner="mock_owner",
         repo="mock_repo",
@@ -50,8 +51,10 @@ def test_repo_metadata(mock_github_api):
         name="mock_repo_metadata"
     )
     context = build_op_context()
+    # Act
     metadata = asset_function(context, mock_github_api)
 
+    # Assert
     # Check if the GitHub API fetch method was called with the correct parameters
     mock_github_api.fetch_repo_details.assert_called_once_with(owner="mock_owner", repo="mock_repo")
 
@@ -75,6 +78,7 @@ def test_repo_report(mocker):
     Args:
         mocker (mocker): The pytest-mock fixture for creating mock objects.
     """
+    # Arrange
     delta_rs = {"name": "delta-rs", "stars": 100, "forks": 50}
     iceberg_python = {"name": "iceberg-python", "stars": 200, "forks": 100}
     hudi_rs = {"name": "hudi-rs", "stars": 150, "forks": 75}
@@ -85,9 +89,11 @@ def test_repo_report(mocker):
         "github_pipeline.assets.create_markdown_report", return_value="mock markdown report"
     )
 
+    # Act
     # Call the repo_report function
     report = repo_report(context, delta_rs, iceberg_python, hudi_rs)
 
+    # Assert
     # Check if the markdown report is generated (assert the function was called)
     mock_create_markdown_report.assert_called_once_with(
         context, {"delta-rs": delta_rs, "iceberg-python": iceberg_python, "hudi-rs": hudi_rs}
