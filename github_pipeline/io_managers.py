@@ -3,14 +3,15 @@ import io
 import json
 from typing import TYPE_CHECKING, Any
 
+from dagster_aws.s3 import PickledObjectS3IOManager
+from upath import UPath
+
 from dagster import (
     InitResourceContext,
     InputContext,
     OutputContext,
     io_manager,
 )
-from dagster_aws.s3 import PickledObjectS3IOManager
-from upath import UPath
 
 if TYPE_CHECKING:
     from mypy_boto3_s3 import S3Client
@@ -135,7 +136,8 @@ class TextObjectS3IOManager(PickledObjectS3IOManager):
         try:
             s3_client: 'S3Client' = self.s3
             s3_obj = s3_client.get_object(Bucket=self.bucket, Key=path.as_posix())
-            text = s3_obj['Body'].encode('utf-8')
+            # Read streamingBody and then decode it.
+            text = s3_obj['Body'].read().decode('utf-8')
             return text
         except s3_client.exceptions.NoSuchKey:
             raise FileNotFoundError(f'Could not find file {path} in S3 bucket {self.bucket}')
